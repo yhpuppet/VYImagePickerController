@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 class UserAlbumListViewController: UIViewController {
     
@@ -20,6 +21,49 @@ class UserAlbumListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    }
+    
+    private func requestAuthorization() {
+        let authStatus = PHPhotoLibrary.authorizationStatus()
+        if authStatus == .authorized {
+            return
+        } else {
+            var message = ""
+            let alertController = UIAlertController(title: "提示", message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            if authStatus == .restricted {
+                message = "您无法授权使用照片，可能是因为您处于家长控制模式下"
+            } else if authStatus == .denied {
+                message = "您已禁止访问您的照片"
+                let navToSettingAction = UIAlertAction(title: "去设置", style: .default) { (action) in
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
+                                              options: [:],
+                                              completionHandler: { (success) in
+                        if !success {
+                            let failOpenSettingAlertController = UIAlertController(title: "打开失败",
+                                                                                   message: "未能打开'设置'，请手动打开",
+                                                                                   preferredStyle: .alert)
+                            let okAction = UIAlertAction(title: "好的", style: .default, handler: { (action) in
+                                
+                            })
+                            failOpenSettingAlertController.addAction(okAction)
+                            self.present(failOpenSettingAlertController, animated: true, completion: {
+                                
+                            })
+                        }
+                    })
+                }
+                alertController.addAction(navToSettingAction)
+            }
+            
+        }
+        
+        
+        if authStatus == .restricted {
+            
+        }
     }
     
     // MARK: - Set up subviews

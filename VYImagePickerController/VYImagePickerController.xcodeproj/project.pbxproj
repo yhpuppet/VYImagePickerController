@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1614690521E04F120003ACCE /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1614690421E04F120003ACCE /* SnapKit.framework */; };
 		8455615A21DFB2AF00A4C470 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8455615921DFB2AF00A4C470 /* AppDelegate.swift */; };
 		8455615C21DFB2AF00A4C470 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8455615B21DFB2AF00A4C470 /* ViewController.swift */; };
 		8455615F21DFB2AF00A4C470 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8455615D21DFB2AF00A4C470 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1614690421E04F120003ACCE /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = ../../../Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		8455615621DFB2AF00A4C470 /* VYImagePickerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VYImagePickerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8455615921DFB2AF00A4C470 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8455615B21DFB2AF00A4C470 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1614690521E04F120003ACCE /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +79,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1614690321E04EEF0003ACCE /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				1614690421E04F120003ACCE /* SnapKit.framework */,
+			);
+			path = Framework;
+			sourceTree = "<group>";
+		};
 		8455614D21DFB2AF00A4C470 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +110,7 @@
 		8455615821DFB2AF00A4C470 /* VYImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
+				1614690321E04EEF0003ACCE /* Framework */,
 				8455615921DFB2AF00A4C470 /* AppDelegate.swift */,
 				8455615B21DFB2AF00A4C470 /* ViewController.swift */,
 				8455615D21DFB2AF00A4C470 /* Main.storyboard */,
@@ -138,6 +150,7 @@
 				8455615221DFB2AF00A4C470 /* Sources */,
 				8455615321DFB2AF00A4C470 /* Frameworks */,
 				8455615421DFB2AF00A4C470 /* Resources */,
+				1614690221E04E940003ACCE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -253,6 +266,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1614690221E04E940003ACCE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8455615221DFB2AF00A4C470 /* Sources */ = {
