@@ -104,3 +104,7 @@ extension UserAlbumListViewController: UITableViewDataSource {
 extension UserAlbumListViewController: UITableViewDelegate {
     
 }
+
+class Cell: UITableViewCell {
+    
+}
