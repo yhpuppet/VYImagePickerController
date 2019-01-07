@@ -8,12 +8,21 @@
 
 import UIKit
 import Photos
+import SnapKit
 
 class UserAlbumListViewController: UIViewController {
     
-    private let albumTableView = UITableView(frame: .zero, style: .plain)
+    private enum Setion: Int, CaseIterable {
+        case allPhotos = 0
+        case smartAlbums
+        case userCollections
+    }
     
-    private var albums = [Any]()
+    private var allPhotos: PHFetchResult<PHAsset>!
+    private var smartAlbums: PHFetchResult<PHAssetCollection>!
+    private var userCollections: PHFetchResult<PHCollection>!
+    
+    private let albumTableView = UITableView(frame: .zero, style: .plain)
     
     // MARK: - Initialization
     
@@ -22,12 +31,26 @@ class UserAlbumListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    }
-    
-    private func requestAuthorization() {
+        
+        
+        
+        // request authorization
         let authStatus = PHPhotoLibrary.authorizationStatus()
         if authStatus == .authorized {
-            return
+            fetchPhotos()
+        } else if authStatus == .notDetermined {
+            PHPhotoLibrary.requestAuthorization { (authStatus) in
+                if authStatus != .authorized {
+                    let alertController = UIAlertController(title: "提示",
+                                                            message: "您未授权使用照片",
+                                                            preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    self.present(alertController, animated: true, completion: nil)
+                } else {
+                    self.fetchPhotos()
+                }
+            }
         } else {
             var message = ""
             let alertController = UIAlertController(title: "提示", message: message, preferredStyle: .alert)
@@ -56,14 +79,21 @@ class UserAlbumListViewController: UIViewController {
                     })
                 }
                 alertController.addAction(navToSettingAction)
+                return
             }
-            
+            present(alertController, animated: true)
         }
+    }
+    
+    private func fetchPhotos() {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
         
-        
-        if authStatus == .restricted {
-            
-        }
+        allPhotos = PHAsset.fetchAssets(with: fetchOptions)
+        smartAlbums = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
+                                                              subtype: .albumRegular,
+                                                              options: nil)
+        userCollections = PHCollection.fetchTopLevelUserCollections(with: nil)
     }
     
     // MARK: - Set up subviews
@@ -71,7 +101,12 @@ class UserAlbumListViewController: UIViewController {
     private func setUpSubviews() {
         albumTableView.dataSource = self;
         albumTableView.delegate = self;
+        albumTableView.rowHeight = UITableView.automaticDimension
+        albumTableView.estimatedRowHeight = 45.0
         view.addSubview(albumTableView)
+        albumTableView.snp.makeConstraints { (make) in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     
@@ -83,11 +118,18 @@ class UserAlbumListViewController: UIViewController {
 extension UserAlbumListViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return Setion.allCases.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return albums.count
+        switch Setion(rawValue: section)! {
+        case .allPhotos:
+            return allPhotos.count
+        case .smartAlbums:
+            return smartAlbums.count
+        case .userCollections:
+            return userCollections.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -102,9 +144,5 @@ extension UserAlbumListViewController: UITableViewDataSource {
 }
 
 extension UserAlbumListViewController: UITableViewDelegate {
-    
-}
-
-class Cell: UITableViewCell {
     
 }
