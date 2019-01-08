@@ -18,11 +18,13 @@ class UserAlbumListViewController: UIViewController {
         case userCollections
     }
     
-    private var allPhotos: PHFetchResult<PHAsset>!
-    private var smartAlbums: PHFetchResult<PHAssetCollection>!
-    private var userCollections: PHFetchResult<PHCollection>!
+    private var allPhotos: PHFetchResult<PHAsset>?
+    private var smartAlbums: PHFetchResult<PHAssetCollection>?
+    private var userCollections: PHFetchResult<PHCollection>?
     
-    private let albumTableView = UITableView(frame: .zero, style: .plain)
+    private var albumTableView: UITableView!
+    
+    private var noAuthorizationPromptLabel: UILabel!
     
     // MARK: - Initialization
     
@@ -30,9 +32,7 @@ class UserAlbumListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
+        view.backgroundColor = .white
         
         // request authorization
         let authStatus = PHPhotoLibrary.authorizationStatus()
@@ -46,42 +46,45 @@ class UserAlbumListViewController: UIViewController {
                                                             preferredStyle: .alert)
                     let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
                     alertController.addAction(okAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    self.present(alertController, animated: true) {
+                        self.showNoAuthorizationPrompt()
+                    }
                 } else {
                     self.fetchPhotos()
                 }
             }
         } else {
-            var message = ""
-            let alertController = UIAlertController(title: "提示", message: message, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            if authStatus == .restricted {
-                message = "您无法授权使用照片，可能是因为您处于家长控制模式下"
-            } else if authStatus == .denied {
-                message = "您已禁止访问您的照片"
-                let navToSettingAction = UIAlertAction(title: "去设置", style: .default) { (action) in
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
-                                              options: [:],
-                                              completionHandler: { (success) in
-                        if !success {
-                            let failOpenSettingAlertController = UIAlertController(title: "打开失败",
-                                                                                   message: "未能打开'设置'，请手动打开",
-                                                                                   preferredStyle: .alert)
-                            let okAction = UIAlertAction(title: "好的", style: .default, handler: { (action) in
-                                
-                            })
-                            failOpenSettingAlertController.addAction(okAction)
-                            self.present(failOpenSettingAlertController, animated: true, completion: {
-                                
-                            })
-                        }
-                    })
-                }
-                alertController.addAction(navToSettingAction)
-                return
-            }
-            present(alertController, animated: true)
+            showNoAuthorizationPrompt()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
+    
+    private func showNoAuthorizationPrompt() {
+        let authStatus = PHPhotoLibrary.authorizationStatus()
+        var prompt = ""
+        if authStatus == .restricted {
+            prompt = "无法访问您的照片，可能是因为您处于家长控制模式下"
+        } else if authStatus == .denied {
+            prompt = "您已禁止访问您的照片，请在“设置”-“隐私”中允许访问照片"
+        }
+        noAuthorizationPromptLabel = UILabel()
+        noAuthorizationPromptLabel.numberOfLines = 0
+        noAuthorizationPromptLabel.textAlignment = .center
+        noAuthorizationPromptLabel.textColor = UIColor.darkGray
+        noAuthorizationPromptLabel.text = prompt
+        view.addSubview(noAuthorizationPromptLabel)
+        noAuthorizationPromptLabel.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.7)
         }
     }
     
@@ -94,11 +97,15 @@ class UserAlbumListViewController: UIViewController {
                                                               subtype: .albumRegular,
                                                               options: nil)
         userCollections = PHCollection.fetchTopLevelUserCollections(with: nil)
+        
+        addAlbumTableView()
+        albumTableView.reloadData()
     }
     
     // MARK: - Set up subviews
     
-    private func setUpSubviews() {
+    private func addAlbumTableView() {
+        albumTableView = UITableView(frame: .zero, style: .grouped)
         albumTableView.dataSource = self;
         albumTableView.delegate = self;
         albumTableView.rowHeight = UITableView.automaticDimension
@@ -108,6 +115,7 @@ class UserAlbumListViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
     
     
     
@@ -124,20 +132,30 @@ extension UserAlbumListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Setion(rawValue: section)! {
         case .allPhotos:
-            return allPhotos.count
+            return 1
         case .smartAlbums:
-            return smartAlbums.count
+            return smartAlbums != nil ? smartAlbums!.count : 0
         case .userCollections:
-            return userCollections.count
+            return userCollections != nil ? userCollections!.count : 0
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let reuseIdentifier = ""
+        let reuseIdentifier = "UserAlbumListTableViewCell"
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
         }
+        switch Setion(rawValue: indexPath.section)! {
+        case .allPhotos:
+            cell!.textLabel?.text = "全部照片"
+            if let photo = allPhotos?.firstObject {
+                
+            }
+        default:
+            cell!.textLabel?.text = "XXXXX"
+        }
+        
         return cell!
     }
     
