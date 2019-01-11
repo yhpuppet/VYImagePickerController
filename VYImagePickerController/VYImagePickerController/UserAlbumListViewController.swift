@@ -116,11 +116,6 @@ class UserAlbumListViewController: UIViewController {
         }
     }
     
-    
-    
-    
-    
-    
 }
 
 extension UserAlbumListViewController: UITableViewDataSource {
