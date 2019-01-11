@@ -34,6 +34,8 @@ class UserAlbumListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
+        navigationItem.title = "照片"
+        
         // request authorization
         let authStatus = PHPhotoLibrary.authorizationStatus()
         if authStatus == .authorized {
@@ -140,15 +142,32 @@ extension UserAlbumListViewController: UITableViewDataSource {
         var cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier)
         if cell == nil {
             cell = UITableViewCell(style: .default, reuseIdentifier: reuseIdentifier)
+            cell?.accessoryType = .disclosureIndicator
         }
         switch Setion(rawValue: indexPath.section)! {
         case .allPhotos:
             cell!.textLabel?.text = "全部照片"
-            if let photo = allPhotos?.firstObject {
-                
+            if let photo = allPhotos?.lastObject {
+                PHImageManager.default().requestImage(for: photo,
+                                                      targetSize: CGSize(width: 30.0, height: 30.0),
+                                                      contentMode: PHImageContentMode.aspectFit,
+                                                      options: nil) { (result, info) in
+                                                        if let image = result {
+                                                            cell?.imageView?.image = image
+                                                        }
+                }
             }
-        default:
-            cell!.textLabel?.text = "XXXXX"
+        case .smartAlbums:
+            let album = smartAlbums![indexPath.row]
+            cell!.textLabel?.text = album.localizedTitle
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "yyyy-MM-dd"
+//            if let date = album.startDate {
+//                cell!.textLabel?.text = formatter.string(from: date)
+//            }
+        case .userCollections:
+            let album = userCollections![indexPath.row]
+            cell!.textLabel?.text = album.localizedTitle
         }
         
         return cell!
