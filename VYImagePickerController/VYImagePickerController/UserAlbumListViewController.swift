@@ -12,6 +12,8 @@ import SnapKit
 
 class UserAlbumListViewController: UIViewController {
     
+    var isFirstShow = true
+    
     private enum Setion: Int, CaseIterable {
         case allPhotos = 0
         case smartAlbums
@@ -37,27 +39,27 @@ class UserAlbumListViewController: UIViewController {
         navigationItem.title = "照片"
         
         // request authorization
-        let authStatus = PHPhotoLibrary.authorizationStatus()
-        if authStatus == .authorized {
-            fetchPhotos()
-        } else if authStatus == .notDetermined {
-            PHPhotoLibrary.requestAuthorization { (authStatus) in
-                if authStatus != .authorized {
-                    let alertController = UIAlertController(title: "提示",
-                                                            message: "您未授权使用照片",
-                                                            preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
-                    alertController.addAction(okAction)
-                    self.present(alertController, animated: true) {
-                        self.showNoAuthorizationPrompt()
-                    }
-                } else {
-                    self.fetchPhotos()
-                }
-            }
-        } else {
-            showNoAuthorizationPrompt()
-        }
+//        let authStatus = PHPhotoLibrary.authorizationStatus()
+//        if authStatus == .authorized {
+//            fetchPhotos()
+//        } else if authStatus == .notDetermined {
+//            PHPhotoLibrary.requestAuthorization { (authStatus) in
+//                if authStatus != .authorized {
+//                    let alertController = UIAlertController(title: "提示",
+//                                                            message: "您未授权使用照片",
+//                                                            preferredStyle: .alert)
+//                    let okAction = UIAlertAction(title: "好的", style: .default, handler: nil)
+//                    alertController.addAction(okAction)
+//                    self.present(alertController, animated: true) {
+//                        self.showNoAuthorizationPrompt()
+//                    }
+//                } else {
+//                    self.fetchPhotos()
+//                }
+//            }
+//        } else {
+//            showNoAuthorizationPrompt()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,6 +104,35 @@ class UserAlbumListViewController: UIViewController {
         
         addAlbumTableView()
         albumTableView.reloadData()
+    }
+    
+    private func fetchUserAllPhotos() -> PHFetchResult<PHAsset> {
+        let fetchOptions = PHFetchOptions()
+        fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: true)]
+        
+        return PHAsset.fetchAssets(with: fetchOptions)
+    }
+    
+    func inspectUserAllPhotos() {
+        let authStatus = PHPhotoLibrary.authorizationStatus()
+        switch authStatus {
+        case .restricted:
+            fallthrough
+        case .denied:
+            showNoAuthorizationPrompt()
+        case .authorized:
+            let vc = PhotoGridViewController(assets: fetchUserAllPhotos())
+            navigationController?.pushViewController(vc, animated: true)
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization { (authStatus) in
+                if authStatus == .authorized {
+                    let vc = PhotoGridViewController(assets: self.fetchUserAllPhotos())
+                    self.navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    self.showNoAuthorizationPrompt()
+                }
+            }
+        }
     }
     
     // MARK: - Set up subviews

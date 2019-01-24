@@ -16,11 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
-        let userAlbumListViewController = UserAlbumListViewController()
-        let navController = UINavigationController(rootViewController: userAlbumListViewController)
+        
+        let vc = ViewController()
+        let navController = UINavigationController(rootViewController: vc)
+        
+//        let userAlbumListViewController = UserAlbumListViewController()
+//        let navController = UINavigationController(rootViewController: userAlbumListViewController)
         window!.rootViewController = navController
         window!.makeKeyAndVisible()
-        
         
         return true
     }

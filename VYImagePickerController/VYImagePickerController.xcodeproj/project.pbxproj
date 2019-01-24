@@ -14,6 +14,11 @@
 		8455616F21DFB2B200A4C470 /* VYImagePickerControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8455616E21DFB2B200A4C470 /* VYImagePickerControllerTests.swift */; };
 		8455617A21DFB2B200A4C470 /* VYImagePickerControllerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8455617921DFB2B200A4C470 /* VYImagePickerControllerUITests.swift */; };
 		8455618821DFB37E00A4C470 /* UserAlbumListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8455618721DFB37E00A4C470 /* UserAlbumListViewController.swift */; };
+		84CBC64A21F854E30004A332 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBC64921F854E30004A332 /* ViewController.swift */; };
+		84CBC64C21F858370004A332 /* UserAllPhotosGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBC64B21F858370004A332 /* UserAllPhotosGridViewController.swift */; };
+		84CBC64E21F86A040004A332 /* EditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBC64D21F86A040004A332 /* EditImageViewController.swift */; };
+		84CBC65021F98F320004A332 /* VYImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBC64F21F98F320004A332 /* VYImagePickerController.swift */; };
+		84CBC65221F9A0DB0004A332 /* PhotoGridViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84CBC65121F9A0DB0004A332 /* PhotoGridViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +52,11 @@
 		8455617921DFB2B200A4C470 /* VYImagePickerControllerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VYImagePickerControllerUITests.swift; sourceTree = "<group>"; };
 		8455617B21DFB2B200A4C470 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8455618721DFB37E00A4C470 /* UserAlbumListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAlbumListViewController.swift; sourceTree = "<group>"; };
+		84CBC64921F854E30004A332 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		84CBC64B21F858370004A332 /* UserAllPhotosGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAllPhotosGridViewController.swift; sourceTree = "<group>"; };
+		84CBC64D21F86A040004A332 /* EditImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditImageViewController.swift; sourceTree = "<group>"; };
+		84CBC64F21F98F320004A332 /* VYImagePickerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VYImagePickerController.swift; sourceTree = "<group>"; };
+		84CBC65121F9A0DB0004A332 /* PhotoGridViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoGridViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +117,12 @@
 		8455615821DFB2AF00A4C470 /* VYImagePickerController */ = {
 			isa = PBXGroup;
 			children = (
+				84CBC64D21F86A040004A332 /* EditImageViewController.swift */,
 				8455615921DFB2AF00A4C470 /* AppDelegate.swift */,
+				84CBC64921F854E30004A332 /* ViewController.swift */,
+				84CBC64B21F858370004A332 /* UserAllPhotosGridViewController.swift */,
+				84CBC65121F9A0DB0004A332 /* PhotoGridViewController.swift */,
+				84CBC64F21F98F320004A332 /* VYImagePickerController.swift */,
 				8455616021DFB2B200A4C470 /* Assets.xcassets */,
 				8455616221DFB2B200A4C470 /* LaunchScreen.storyboard */,
 				8455616521DFB2B200A4C470 /* Info.plist */,
@@ -287,7 +302,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84CBC64A21F854E30004A332 /* ViewController.swift in Sources */,
 				8455615A21DFB2AF00A4C470 /* AppDelegate.swift in Sources */,
+				84CBC64C21F858370004A332 /* UserAllPhotosGridViewController.swift in Sources */,
+				84CBC64E21F86A040004A332 /* EditImageViewController.swift in Sources */,
+				84CBC65021F98F320004A332 /* VYImagePickerController.swift in Sources */,
+				84CBC65221F9A0DB0004A332 /* PhotoGridViewController.swift in Sources */,
 				8455618821DFB37E00A4C470 /* UserAlbumListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
